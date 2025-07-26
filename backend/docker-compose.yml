@@ -1,0 +1,24 @@
+version: "latest"
+services:
+    db:
+        image: postgres:alpine3.20
+        environment:
+            - POSTGRES_USER=admin
+            - POSTGRES_PASSWORD=admin
+            - POSTGRES_DB=mwrag
+        expose:
+            - 5433
+        ports:
+            - 5433:5433/tcp
+        command: -p 5433
+
+    api:
+        build:
+            context: .
+            target: dev
+        volumes:
+            - ./:/app
+
+        ports:
+            - 3001:3001
+        command: npm run nodemon

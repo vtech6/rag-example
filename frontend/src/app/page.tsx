@@ -2,42 +2,14 @@
 import { Toaster } from "@/components/ui/toaster";
 import { useLoginMutation } from "@/features/auth/api/api";
 import { useSession } from "@/features/auth/auth";
-import Login from "@/features/auth/components/Login";
-import LogOut from "@/features/auth/components/LogOut";
-import SignUp from "@/features/auth/components/SignUp";
-import FileList from "@/features/upload/components/FileList";
-import {
-  Box,
-  Center,
-  Presence,
-  Span,
-  Spinner,
-  Text,
-  VStack,
-} from "@chakra-ui/react";
-import { useCallback, useMemo, useState } from "react";
 
-enum SECTIONS {
-  LOGIN = "LOGIN",
-  SIGN_UP = "SIGN_UP",
-}
+import FileSection from "@/features/documents/components/FileSection";
+import WelcomeSection from "@/features/welcome/components/WelcomeSection";
+import { Center, HStack, Presence, Spinner } from "@chakra-ui/react";
+import { useMemo } from "react";
 
 export default function Home() {
   const [, { isSuccess }] = useLoginMutation();
-  const [sectionToShow, setSectionToShow] = useState<SECTIONS>(SECTIONS.LOGIN);
-
-  const switchSection = useCallback(() => {
-    if (sectionToShow === SECTIONS.LOGIN) {
-      setSectionToShow(SECTIONS.SIGN_UP);
-    } else {
-      setSectionToShow(SECTIONS.LOGIN);
-    }
-  }, [sectionToShow]);
-
-  const isLogin = useMemo(
-    () => sectionToShow === SECTIONS.LOGIN,
-    [sectionToShow]
-  );
 
   const session = useSession();
 
@@ -57,31 +29,14 @@ export default function Home() {
   }
 
   return (
-    <Center w="100vw" h={"100vh"}>
+    <HStack w={"100vw"} h={"100vh"} p={0}>
       <Presence present={!isLoggedIn}>
-        <VStack w={"100%"}>
-          {sectionToShow === SECTIONS.LOGIN ? <Login /> : <SignUp />}
-          <Box h={4} />
-          <Text fontSize={"md"}>
-            {isLogin ? "First time visiting? " : "Already have an account? "}
-            <Span
-              cursor={"pointer"}
-              _hover={{ color: "ActiveCaption" }}
-              textDecor={"underline"}
-              onClickCapture={switchSection}
-            >
-              {isLogin ? "Click here to sign up." : "Click here to sign in."}
-            </Span>
-          </Text>
-        </VStack>
+        <WelcomeSection />
       </Presence>
       <Presence present={isLoggedIn}>
-        <LogOut />
-        <VStack w={"400px"}>
-          <FileList />
-        </VStack>
+        <FileSection />
       </Presence>
       <Toaster />
-    </Center>
+    </HStack>
   );
 }

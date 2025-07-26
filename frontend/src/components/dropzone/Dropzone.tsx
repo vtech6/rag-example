@@ -16,10 +16,9 @@ const Dropzone = ({ fileUpload }: { fileUpload: UseFileUploadReturn }) => {
         </Icon>
         <FileUpload.DropzoneContent>
           <Box>Drag and drop files here</Box>
-          <Box color="fg.muted">.pdf, .txt up to 5MB</Box>
+          <Box color="fg.muted">.pdf, up to 5MB</Box>
         </FileUpload.DropzoneContent>
       </FileUpload.Dropzone>
-      <FileUpload.List />
     </FileUpload.RootProvider>
   );
 };

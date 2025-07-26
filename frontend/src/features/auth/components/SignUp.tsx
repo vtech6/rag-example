@@ -78,7 +78,7 @@ function SignUp() {
         <Box h={8} />
 
         <Button type={"submit"} variant={"outline"}>
-          {isLoading ? <Spinner /> : "Sign In"}
+          {isLoading ? <Spinner /> : "Sign Up"}
         </Button>
       </VStack>
     </form>

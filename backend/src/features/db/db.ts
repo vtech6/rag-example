@@ -1,3 +1,5 @@
+import { PGVectorStore } from "@langchain/community/vectorstores/pgvector"
+import { OpenAIEmbeddings } from "@langchain/openai"
 import {
     Kysely,
     PostgresAdapter,
@@ -6,7 +8,7 @@ import {
 } from "kysely"
 import { KyselySequelizeDialect } from "kysely-sequelize"
 import { Sequelize } from "sequelize-typescript"
-
+import { PostgresRecordManager } from "@langchain/community/indexes/postgres"
 interface Database {}
 
 const dotenv = process.env
@@ -37,6 +39,29 @@ sequelize.authenticate({
         timeout: 5 * 60 * 1_000,
     },
 })
+const postgresConnectionOptions = {
+    host: "172.22.0.1",
+    port: 5433,
+    user: "admin",
+    password: "admin",
+    database: "mwrag",
+}
+const postgresOptions = {
+    postgresConnectionOptions,
+    tableName: "documents",
+}
+
+const embeddingModel = new OpenAIEmbeddings()
+export const getVectorStore = () =>
+    PGVectorStore.initialize(embeddingModel, {
+        ...postgresOptions,
+        tableName: "vector_store",
+    })
+
+export const getVectorManager = () =>
+    new PostgresRecordManager("record_manager", postgresOptions)
+getVectorManager().createSchema()
+sequelize.query("CREATE EXTENSION IF NOT EXISTS vector")
 
 let kysely: Kysely<Database>
 let dialect: KyselySequelizeDialect

@@ -9,13 +9,20 @@ function isHydrateAction(action: Action): action is PayloadAction<any> {
   return action.type === HYDRATE;
 }
 
+export enum TAGS {
+  UPLOAD = "UPLOAD",
+  LIST_FILES = "LIST_FILES",
+  QUERY_DOCUMENT = "QUERY_DOCUMENT",
+}
+
 export const baseApi = createApi({
   reducerPath: "baseApi",
-  baseQuery: fetchBaseQuery({ baseUrl: "https://localhost:3001/api/" }),
+  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:3001/api/" }),
   endpoints: () => ({}),
   extractRehydrationInfo(action, { reducerPath }) {
     if (isHydrateAction(action)) {
       return action.payload[reducerPath];
     }
   },
+  tagTypes: [TAGS.LIST_FILES, TAGS.QUERY_DOCUMENT, TAGS.UPLOAD],
 });

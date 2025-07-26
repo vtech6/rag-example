@@ -31,7 +31,7 @@ const authApi = baseApi.injectEndpoints({
     }),
     signOut: builder.mutation<void, void>({
       queryFn: async () => {
-        const res = await signOut();
+        const res = signOut();
         return res as any;
       },
     }),

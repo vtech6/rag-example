@@ -1,7 +1,7 @@
 version: "latest"
 services:
-    db:
-        image: postgres:alpine3.20
+    mwrag:
+        image: ankane/pgvector
         environment:
             - POSTGRES_USER=admin
             - POSTGRES_PASSWORD=admin

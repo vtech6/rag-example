@@ -40,11 +40,11 @@ sequelize.authenticate({
     },
 })
 const postgresConnectionOptions = {
-    host: "172.22.0.1",
-    port: 5433,
-    user: "admin",
-    password: "admin",
-    database: "mwrag",
+    host: POSTGRES_HOST,
+    port: parseInt(POSTGRES_PORT ?? "1"),
+    user: POSTGRES_USER,
+    password: POSTGRES_PASSWORD,
+    database: POSTGRES_DB,
 }
 const postgresOptions = {
     postgresConnectionOptions,
